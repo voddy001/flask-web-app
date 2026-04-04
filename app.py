@@ -38,5 +38,12 @@ def about():
     """
 
 
+@app.route("/status")
+def status():
+    return {
+        "status":   "ok",
+        "message": "flask app is running smoothly!",
+        "version": "1.0.0"
+    }
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
