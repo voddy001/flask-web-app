@@ -69,9 +69,9 @@ def read_logs():
 
 
 def analyse_logs(lines):
-    """
-    Classify each log line and decide which ones to remove.
-    Rules:
+     """
+     Classify each log line and decide which ones to remove.
+     Rules:
       - DEBUG lines  → flagged as 'noise' (safe to remove)
       - ERROR lines  → flagged as 'critical' (keep)
       - WARNING lines → flagged as 'warning' (keep)
@@ -117,8 +117,8 @@ def clean_logs(remove_debug=True, remove_empty=True, custom_pattern=None):
             should_remove = True
         elif custom_pattern:
             try:
-                if re.search(custom_pattern, stripped):
-                    should_remove = True
+        if re.search(custom_pattern, stripped):
+            should_remove = True
             except re.error:
                 pass
         if should_remove:
