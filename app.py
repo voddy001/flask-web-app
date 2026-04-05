@@ -222,6 +222,13 @@ def api_analyse():
 
 
 
+@app.route("/status")
+def status():
+    return {
+        "status":   "ok",
+        "message": "flask app is running smoothly!",
+        "version": "1.0.0"
+    }
 if __name__ == "__main__":
     debug_mode = os.getenv("FLASK_DEBUG", "False") == "True"
     app.run(host="0.0.0.0", port=PORT, debug=debug_mode)
