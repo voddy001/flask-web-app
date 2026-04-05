@@ -9,5 +9,6 @@ else
     source venv/bin/activate
 fi
 
+echo "🚀 Starting server at http://0.0.0.0:5000"
 # to run the Flask app
 python app.py

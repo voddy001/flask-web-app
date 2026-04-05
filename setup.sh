@@ -1,7 +1,12 @@
 #!/bin/bash
+set -e
+
+echo "[1/4] Updating packages..."
 
 # To update package list
 sudo apt update
+
+echo "[2/4] Installing Python..."
 
 # to Install python and pip if it doesnt exist
 sudo apt install -y python3 python3-pip python3-venv
