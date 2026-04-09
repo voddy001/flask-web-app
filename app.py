@@ -154,7 +154,7 @@ def home():
         "uptime": "Active",
     }
 
-    return render_template("index.html", stats=stats)
+    return render_template("home.html", stats=stats)
  
 
 
