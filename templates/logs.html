@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>App Logs</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 50px; }
+        h1 { color: #333; }
+        .log-box { background: #1e1e1e; color: #00ff00; padding: 20px; border-radius: 10px; font-family: monospace; }
+    </style>
+</head>
+<body>
+    <h1>Application Logs</h1>
+    <div class="log-box">
+        {% if logs %}
+            {% for log in logs %}
+                <p>{{ log }}</p>
+            {% endfor %}
+        {% else %}
+            <p>No logs available.</p>
+        {% endif %}
+    </div>
+    <br>
+    <a href="/">Go back to Home Page</a>
+</body>
+</html>
