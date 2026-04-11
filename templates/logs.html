@@ -1,25 +1,54 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>App Logs</title>
     <style>
-        body { font-family: Arial, sans-serif; padding: 50px; }
-        h1 { color: #333; }
-        .log-box { background: #1e1e1e; color: #00ff00; padding: 20px; border-radius: 10px; font-family: monospace; }
+        body {
+            font-family: Arial, sans-serif;
+            padding: 50px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .log-box {
+            background: #1e1e1e;
+            color: #00ff00;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: monospace;
+        }
     </style>
 </head>
+
 <body>
     <h1>Application Logs</h1>
+    <h2>Logs ({{ total }}) - Noise: {{ noise_count }}</h2>
     <div class="log-box">
         {% if logs %}
-            {% for log in logs %}
-                <p>{{ log }}</p>
-            {% endfor %}
+        {% for log in logs %}
+        <p>{{ log }}</p>
+        {% endfor %}
         {% else %}
-            <p>No logs available.</p>
+        <p>No logs available.</p>
         {% endif %}
     </div>
+    <!-- Seed button -->
+    <form action="{{ url_for('seed_logs') }}" method="post" style="margin-top: 20px;">
+        <button type="submit">Seed Sample Logs</button>
+    </form>.
+
+    <!-- Clean form -->
+    <form action="{{ url_for('clean') }}" method="post" style="margin-top: 20px;">
+        <label><input type="checkbox" name="remove_debugs"> Remove DEBUG logs</label>
+        <label><input type="checkbox" name="remove_empty"> Remove Empty logs</label>
+        <p><input type="text" name="custom_pattern" placeholder="Custom pattern to remove"></p>
+        <button type="submit">Clean Logs</button>
+    </form>
     <br>
     <a href="/">Go back to Home Page</a>
 </body>
+
 </html>
