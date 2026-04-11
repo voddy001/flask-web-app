@@ -4,6 +4,7 @@ import re
 import logging
 from datetime import datetime, timedelta
 from flask import Flask, render_template, request, jsonify, redirect, url_for, flash
+
 load_dotenv()
 
 
@@ -21,11 +22,10 @@ LOG_FILE = os.path.join(LOG_DIR, "app.log")
 os.makedirs(LOG_DIR, exist_ok=True)
 
 logging.basicConfig(
-
-        filename=LOG_FILE,
-        level=logging.INFO,
-        format="%(asctime)s [%(levelname)s] %(message)s",
-        datefmt="%Y-%m-%d %H:%M:%S",
+    filename=LOG_FILE,
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S",
 )
 logger = logging.getLogger(__name__)
 
@@ -55,17 +55,18 @@ def seed_sample_logs():
 
     with open(LOG_FILE, "a") as f:
         for entry in sample_logs:
-             timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-             f.write(f"{timestamp} {entry}\n")
+            timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            f.write(f"{timestamp} {entry}\n")
+
 
 # Smart Log Cleaner Logic
 
 
 def read_logs():
     if not os.path.exists(LOG_FILE):
-         return []
+        return []
     with open(LOG_FILE, "r") as f:
-         return f.readlines()
+        return f.readlines()
 
 
 def analyse_logs(lines):
@@ -86,16 +87,22 @@ def analyse_logs(lines):
         elif "[DEBUG]" in line or "DEBUG" in line:
             results.append({"index": i, "line": line, "level": "debug", "remove": True})
         elif "[ERROR]" in line or "ERROR" in line:
-            results.append({"index": i, "line": line, "level": "error", "remove": False})
+            results.append(
+                {"index": i, "line": line, "level": "error", "remove": False}
+            )
         elif "[WARNING]" in line or "WARNING" in line:
-            results.append({"index": i, "line": line, "level": "warning", "remove": False})
+            results.append(
+                {"index": i, "line": line, "level": "warning", "remove": False}
+            )
         elif "[INFO]" in line or "INFO" in line:
-            results.append({"index": i, "line": line, "level": "debug", "remove": False})
+            results.append(
+                {"index": i, "line": line, "level": "debug", "remove": False}
+            )
         else:
-            results.append({"index": i, "line": line, "level": "unknown", "remove": False})
+            results.append(
+                {"index": i, "line": line, "level": "unknown", "remove": False}
+            )
         return results
-
-
 
 
 def clean_logs(remove_debug=True, remove_empty=True, custom_pattern=None):
@@ -132,8 +139,6 @@ def clean_logs(remove_debug=True, remove_empty=True, custom_pattern=None):
         f"Log clean run: {original_count} lines → {len(kept)} kept, {len(removed)} removed"
     )
 
-
-
     return {
         "original": original_count,
         "kept": len(kept),
@@ -142,8 +147,8 @@ def clean_logs(remove_debug=True, remove_empty=True, custom_pattern=None):
     }
 
 
+# route
 
-#route
 
 @app.route("/")
 def home():
@@ -155,7 +160,6 @@ def home():
     }
 
     return render_template("home.html", stats=stats)
- 
 
 
 @app.route("/about")
@@ -178,7 +182,6 @@ def logs():
     )
 
 
-
 @app.route("/logs/seed", methods=["POST"])
 def seed_logs():
     seed_sample_logs()
@@ -191,7 +194,6 @@ def clean():
     remove_debug = request.form.get("remove_debug") == "on"
     remove_empty = request.form.get("remove_empty") == "on"
     custom_pattern = request.form.get("custom_pattern", "").strip() or None
-
 
     result = clean_logs(
         remove_debug=remove_debug,
@@ -213,6 +215,7 @@ def clear_all():
     flash("All logs cleared.", "warning")
     return redirect(url_for("logs"))
 
+
 @app.route("/api/logs/analyse")
 def api_analyse():
     """JSON endpoint — returns log analysis."""
@@ -221,15 +224,11 @@ def api_analyse():
     return jsonify({"total": len(analysed), "logs": analysed})
 
 
-
 @app.route("/status")
 def status():
-    return {
-        "status":   "ok",
-        "message": "flask app is running smoothly!",
-        "version": "1.0.0"
-    }
+    return render_template("status.html")
+
+
 if __name__ == "__main__":
     debug_mode = os.getenv("FLASK_DEBUG", "False") == "True"
     app.run(host="0.0.0.0", port=PORT, debug=debug_mode)
-
